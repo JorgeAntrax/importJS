@@ -1,19 +1,23 @@
 class API {
-    static set($file) {
+    static set($file, $module = 'body', $type = 'file') {
         if (Array.isArray($file)) {
             for (let $i = 0; $i < $file.length; $i++) {
-                API.create($file[$i]);
+                API.create($file[$i], $module, $type);
             }
         } else {
-            API.create($file);
+            API.create($file, $module, $type);
         }
     }
 
-    static create($script) {
+    static create($script, $module, $type) {
         let s = document.createElement("script");
-        s.src = `/js/${$script}.js`;
+        if ($type == 'file') {
+            s.src = `/js/${$script}.js`;
+        } else {
+            s.src = $script;
+        }
         s.setAttribute('dynamic-script', true);
-        document.querySelector("body").appendChild(s);
+        document.querySelector($module).appendChild(s);
     }
 
     static remove($file) {
